@@ -11,7 +11,7 @@
 - name: Deploy system-wide zshrc
   tags: zsh
   ansible.builtin.template:
-    src: templates/zshrc
+    src: templates/zsh/zshrc
     dest: /etc/zsh/zshrc
     owner: root
     group: root
