@@ -1,4 +1,6 @@
 # Setup admin user
+
+# idempotency failure
 - name: Create admin user
   ansible.builtin.user:
     name: "{{ admin_user }}"

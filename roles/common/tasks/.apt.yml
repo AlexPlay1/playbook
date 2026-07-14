@@ -4,6 +4,7 @@
     content: ""
     dest: /etc/apt/sources.list
 
+# Deprecation warn about ansible_ variables
 - name: Add Debian repository
   ansible.builtin.template:
     src: templates/apt/debian.sources
