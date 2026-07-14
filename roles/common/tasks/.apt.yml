@@ -13,10 +13,15 @@
     mode: "0644"
   notify: Update apt cache
 
+- name: Upgrade packages
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: safe
+
 # Install packages
 - name: Install common utilities
-  tags: base
   ansible.builtin.apt:
+    update_cache: true
     name:
       - curl
       - wget
