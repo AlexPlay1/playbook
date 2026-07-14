@@ -16,6 +16,14 @@
     group: root
     mode: "0644"
 
+- name: Create override directory for apt-daily
+  ansible.builtin.file:
+    path: /etc/systemd/system/apt-daily.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
 - name: Deploy apt daily timer override
   tags: unattended
   ansible.builtin.template:
