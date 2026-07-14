@@ -1,0 +1,12 @@
+- name: VPS initial configuration
+  hosts: vps
+  become: true
+  roles:
+    - common
+    - docker
+    - cloudflare-warp
+  vars_prompt:
+    - name: admin_password
+      prompt: "Enter a password for the new administrator account"
+      private: true
+      confirm: true

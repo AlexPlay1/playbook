@@ -1,0 +1,11 @@
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}.188201.xyz"
+    use: systemd
+
+- name: Update /etc/hosts with new hostname # Debian exclusive
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1'
+    line: "127.0.1.1 {{ inventory_hostname }} {{ inventory_hostname_short }}"
+    state: present

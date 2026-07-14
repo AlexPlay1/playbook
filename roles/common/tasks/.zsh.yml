@@ -1,0 +1,24 @@
+# zsh
+- name: Install zsh and plugins from apt
+  tags: zsh
+  ansible.builtin.apt:
+    name:
+      - zsh
+      - zsh-syntax-highlighting
+      - zsh-autosuggestions
+    state: present
+
+- name: Deploy system-wide zshrc
+  tags: zsh
+  ansible.builtin.template:
+    src: templates/zshrc
+    dest: /etc/zsh/zshrc
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Set zsh as default shell for admin user
+  tags: zsh
+  ansible.builtin.user:
+    name: "{{ admin_user }}"
+    shell: /usr/bin/zsh

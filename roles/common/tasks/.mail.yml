@@ -1,0 +1,25 @@
+# Setup MTA
+- name: Install msmtp # msmtpd.service???
+  ansible.builtin.apt:
+    name:
+      - msmtp
+      - msmtp-mta
+      - bsd-mailx
+    state: present
+
+- name: Deploy msmtp system config
+  ansible.builtin.template:
+    src: templates/mail/msmtprc
+    dest: /etc/msmtprc
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Set alias for root user
+  ansible.builtin.lineinfile:
+    path: /etc/aliases
+    regexp: "^root:"
+    line: "root: {{ admin_email }}"
+
+- name: Update aliases database
+  ansible.builtin.shell: /sbin/newaliases

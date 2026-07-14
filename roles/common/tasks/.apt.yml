@@ -1,0 +1,36 @@
+# Setup repositories
+- name: Remove legacy Debian repository
+  ansible.builtin.copy:
+    content: ""
+    dest: /etc/apt/sources.list
+
+- name: Add Debian repository
+  ansible.builtin.template:
+    src: templates/apt/debian.sources
+    dest: /etc/apt/sources.list.d/debian.sources
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Update apt cache
+
+# Install packages
+- name: Install common utilities
+  tags: base
+  ansible.builtin.apt:
+    name:
+      - curl
+      - wget
+      - git
+      - htop
+      - ncdu
+      - tmux
+      - aptitude
+      - rsync
+      - iperf3
+      - gnupg
+      - lsb-release
+      - unzip
+      - xz-utils
+      - zstd
+      - logrotate
+    state: present

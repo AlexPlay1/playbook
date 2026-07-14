@@ -1,0 +1,30 @@
+- name: Download Cloudflare GPG key
+  tags: cloudflare-warp
+  ansible.builtin.get_url:
+    url: https://pkg.cloudflareclient.com/pubkey.gpg
+    dest: /usr/share/keyrings/cloudflare-warp-archive-keyring.asc
+    mode: "0644"
+    force: false
+
+- name: Add Cloudflare repository
+  tags: cloudflare-warp
+  ansible.builtin.template:
+    src: templates/apt/cloudflare.sources
+    dest: /etc/apt/cloudflare.sources
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Update apt cache
+
+- name: Install Cloudflare Warp
+  tags: cloudflare-warp
+  ansible.builtin.apt:
+    name: cloudflare-warp
+    state: present
+
+- name: Enable and start Warp service
+  tags: cloudflare-warp
+  ansible.builtin.service:
+    name: warp-svc
+    enabled: true
+    state: started

@@ -1,0 +1,26 @@
+# Setup fail2ban
+- name: Install fail2ban
+  ansible.builtin.apt:
+    name: fail2ban
+    state: present
+
+- name: Enable and start fail2ban
+  ansible.builtin.service:
+    name: fail2ban
+    enabled: true
+    state: started
+
+- name: Make sure that there're no default jail configs
+  ansible.builtin.shell: rm -f /etc/fail2ban/jail.d/*
+  notify: Restart fail2ban
+
+- name: Deploy fail2ban jail config # Make the config more sophisticated
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/etc/fail2ban/jail.d/{{ item | basename }}"
+    owner: root
+    group: root
+    mode: "0644"
+  with_fileglob:
+    - "templates/fail2ban/jail.d/*"
+  notify: Restart fail2ban

@@ -1,0 +1,53 @@
+# Network setup
+- name: Install required package
+  ansible.builtin.apt:
+    name:
+      - systemd-resolved
+    state: present
+
+- name: Ensure drop-in directories exists
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - /etc/systemd/networkd.conf.d
+    - /etc/systemd/resolved.conf.d
+
+- name: Deploy global network config
+  ansible.builtin.template:
+    src: templates/network/10-disable-dns-via-dhcp.conf
+    dest: /etc/systemd/networkd.conf.d/10-disable-dns-via-dhcp.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Deploy ethernet network config
+  ansible.builtin.template:
+    src: templates/network/10-ethernet-dhcp.network
+    dest: /etc/systemd/network/10-ethernet-dhcp.network
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Deploy DNS config
+  ansible.builtin.template:
+    src: templates/network/10-dns-cloudflare.conf
+    dest: /etc/systemd/resolved.conf.d/10-dns-cloudflare.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart systemd-resolved service
+
+- name: Enable network services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    enabled: true
+  loop:
+    - systemd-networkd
+    - systemd-resolved
+
+# - name: Disable legacy networking
+#   ansible.builtin.service:
+#     name: networking
+#     enabled: false

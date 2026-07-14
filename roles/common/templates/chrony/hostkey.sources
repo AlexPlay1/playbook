@@ -1,0 +1,4 @@
+# {{ ansible_managed }}
+
+server ntp.hostkey.com iburst minpoll 1 maxpoll 3
+server ntp1.time.nl iburst minpoll 1 maxpoll 3

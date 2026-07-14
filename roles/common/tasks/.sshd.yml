@@ -1,0 +1,11 @@
+# Setup sshd
+- name: Configure sshd
+  tags: ssh
+  ansible.builtin.template:
+    src: templates/ssh/99-sshd.conf
+    dest: /etc/ssh/sshd_config.d/99-sshd.conf
+    owner: root
+    group: root
+    mode: "0600"
+    validate: sshd -t -f %s
+  notify: Restart sshd

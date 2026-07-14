@@ -1,0 +1,34 @@
+# Setup unattended upgrades
+- name: Install unattended-upgrades
+  tags: unattended
+  ansible.builtin.apt:
+    name:
+      - unattended-upgrades
+      - apt-listchanges
+    state: present
+
+- name: Deploy unattended-upgrades config
+  tags: unattended
+  ansible.builtin.template:
+    src: templates/apt/99unattended-upgrades
+    dest: /etc/apt/apt.conf.d/99unattended-upgrades
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Deploy apt daily timer override
+  tags: unattended
+  ansible.builtin.template:
+    src: templates/apt/override.conf
+    dest: /etc/systemd/system/apt-daily-upgrade.timer.d/override.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Enable and start unattended-upgrades service
+  tags: unattended
+  ansible.builtin.service:
+    name: unattended-upgrades
+    enabled: true
+    state: started

@@ -1,0 +1,33 @@
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Restart sshd
+  ansible.builtin.service:
+    name: ssh
+    state: restarted
+
+- name: Restart fail2ban
+  ansible.builtin.service:
+    name: fail2ban
+    state: restarted
+
+- name: Restart systemd-networkd service
+  ansible.builtin.service:
+    name: systemd-networkd
+    state: restarted
+
+- name: Reload systemd-networkd network config
+  ansible.builtin.shell: networkctl reload
+
+- name: Restart systemd-resolved service
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: restarted
+
+- name: Apply sysctl changes
+  ansible.builtin.shell: sysctl --system
+
+- name: Reload systemd
+  ansible.builtin.systemd_service:
+    daemon_reload: true

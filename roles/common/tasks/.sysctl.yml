@@ -1,0 +1,9 @@
+# Sysctl settings
+- name: Apply sysctl settings
+  ansible.builtin.template:
+    src: templates/sysctl/99-sysctl.conf
+    dest: /etc/sysctl.d/99-sysctl.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Apply sysctl changes

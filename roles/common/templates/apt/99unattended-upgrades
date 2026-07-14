@@ -1,0 +1,54 @@
+// {{ ansible_managed }}
+
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+APT::Periodic::AutocleanInterval "7";
+
+Unattended-Upgrade::Origins-Pattern {
+	// Debian stable packages
+	"origin=Debian,codename=${distro_codename},label=Debian";
+
+	// Debian security updates
+	"origin=Debian,codename=${distro_codename},label=Debian-Security";
+	"origin=Debian,codename=${distro_codename}-security,label=Debian-Security";
+
+	// Debian stable updates
+	"origin=Debian,codename=${distro_codename}-updates";
+
+	// Debian proposed updates
+//	"origin=Debian,codename=${distro_codename}-proposed-updates";
+
+	// Debian backports updates
+//	"origin=Debian,codename=${distro_codename}-backports";
+
+	// Docker
+	"site=download.docker.com,codename=${distro_codename}";
+
+	// Cloudflare Warp
+	"site=pkg.cloudflareclient.com,codename=${distro_codename}";
+};
+
+// Packages to never auto-upgrade (regex)
+Unattended-Upgrade::Package-Blacklist {
+
+};
+
+// Remove unused automatically-installed packages after upgrade
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+Unattended-Upgrade::Remove-New-Unused-Dependencies "true";
+
+// Automatically reboot if required (e.g. kernel update), at a quiet time
+Unattended-Upgrade::Automatic-Reboot "false";
+Unattended-Upgrade::Automatic-Reboot-WithUsers "false";
+Unattended-Upgrade::Automatic-Reboot-Time "03:30";
+
+// Email notifications (set to a real address or leave empty to disable)
+Unattended-Upgrade::Mail "root";
+Unattended-Upgrade::MailReport "on-change";
+
+// Split the upgrade into smaller chunks to avoid holding locks too long
+Unattended-Upgrade::MinimalSteps "true";
+
+// Write events to syslog
+Unattended-Upgrade::SyslogEnable "true";
+Unattended-Upgrade::SyslogFacility "daemon";

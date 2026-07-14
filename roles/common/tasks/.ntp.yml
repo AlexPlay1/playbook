@@ -1,0 +1,18 @@
+- name: Install Chrony
+  ansible.builtin.apt:
+    name: chrony
+    state: present
+
+- name: Ensure the chrony service is running
+  ansible.builtin.service:
+    name: chrony
+    enabled: true
+    state: started
+
+- name: Setup a Chrony NTP Server
+  ansible.builtin.template:
+    src: templates/ntp/hostkey.sources
+    dest: /etc/chrony/sources.d/hostkey.sources
+    owner: root
+    group: root
+    mode: "0644"

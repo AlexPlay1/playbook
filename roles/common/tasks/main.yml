@@ -1,0 +1,44 @@
+- name: Setup hostname
+  ansible.builtin.import_tasks: .hostname.yml
+
+- name: Setup admin user
+  ansible.builtin.import_tasks: .users.yml
+
+- name: Setup sysctl
+  ansible.builtin.import_tasks: .sysctl.yml
+
+- name: Setup apt
+  ansible.builtin.import_tasks: .apt.yml
+
+- name: Setup unattended-upgrades
+  ansible.builtin.import_tasks: .unattended-upgrades.yml
+
+- name: Setup network
+  ansible.builtin.import_tasks: .network.yml
+
+- name: Setup NTP time sync
+  ansible.builtin.import_tasks: .ntp.yml
+
+- name: Setup firewall
+  ansible.builtin.import_tasks: .firewall.yml
+
+# - name: Setup MTA
+#   ansible.builtin.import_tasks: .mail.yml
+
+- name: Setup zsh
+  ansible.builtin.import_tasks: .zsh.yml
+
+- name: Setup bash
+  ansible.builtin.import_tasks: .bash.yml
+
+- name: Setup sshd
+  ansible.builtin.import_tasks: .sshd.yml
+
+# Daily reboot
+- name: Schedule daily reboot at 03:00
+  ansible.builtin.cron:
+    name: Daily reboot
+    hour: "3"
+    minute: "0"
+    user: root
+    job: /sbin/reboot

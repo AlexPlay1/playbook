@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+[Match]
+Name=en*
+
+[Network]
+DHCP=yes

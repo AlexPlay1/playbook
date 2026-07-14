@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+# Cloudflare repository
+
+Types: deb
+URIs: https://pkg.cloudflareclient.com
+Suites: {{ ansible_distribution_release }}
+Components: main
+Signed-By: /usr/share/keyrings/cloudflare-warp-archive-keyring.asc

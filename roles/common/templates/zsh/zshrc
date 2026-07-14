@@ -1,0 +1,82 @@
+# {{ ansible_managed }}
+
+# ── History ────────────────────────────────────────────────────────────────────
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt hist_ignore_dups       # skip consecutive duplicates
+setopt hist_ignore_space      # skip commands prefixed with a space
+setopt share_history          # share history across sessions
+setopt inc_append_history     # write to history immediately
+
+# ── Navigation ─────────────────────────────────────────────────────────────────
+setopt autocd                 # type a dir name to cd into it
+setopt autopushd              # cd pushes to directory stack
+setopt pushd_ignore_dups
+setopt correct                # suggest corrections for mistyped commands
+
+# ── Completion ─────────────────────────────────────────────────────────────────
+autoload -Uz compinit && compinit
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'   # case-insensitive
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
+
+# ── Key bindings ───────────────────────────────────────────────────────────────
+bindkey -e                               # emacs-style line editing
+bindkey '^[[A' history-search-backward   # up arrow → history search
+bindkey '^[[B' history-search-forward    # down arrow → history search
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[3~' delete-char
+bindkey '^[[1;5C' forward-word    # Ctrl+Right
+bindkey '^[[1;5D' backward-word   # Ctrl+Left
+
+# ── Prompt (minimal, two-line, git-aware) ──────────────────────────────────────
+autoload -Uz vcs_info
+zstyle ':vcs_info:git:*' formats ' %F{cyan}(%b)%f'
+zstyle ':vcs_info:*' enable git
+
+precmd() { vcs_info }
+
+setopt prompt_subst
+
+# Colours
+_col_user='%F{green}'
+_col_root='%F{red}'
+_col_path='%F{blue}'
+_col_reset='%f'
+
+# Show user in red when root, green otherwise
+_user_col() { [[ $EUID -eq 0 ]] && echo "$_col_root" || echo "$_col_user" }
+
+PROMPT='$(_user_col)%n%f@%m ${_col_path}%~%f${vcs_info_msg_0_}
+%(?.%F{green}❯%f.%F{red}❯%f) '
+
+RPROMPT='%F{240}%*%f'   # timestamp on the right
+
+# ── Aliases ────────────────────────────────────────────────────────────────────
+alias ls='ls --color=auto'
+alias ll='ls -lah --color=auto'
+alias la='ls -A --color=auto'
+alias grep='grep --color=auto'
+alias diff='diff --color=auto'
+alias ip='ip --color=auto'
+alias df='df -h'
+alias du='du -h'
+alias free='free -h'
+
+# ── Environment ────────────────────────────────────────────────────────────────
+export EDITOR=micro
+export PAGER=less
+export LESS='-R --use-color'
+export COLORTERM=truecolor
+
+# ── Plugins (from apt) ─────────────────────────────────────────────────────────
+# zsh-autosuggestions
+[[ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] &&
+    source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# zsh-syntax-highlighting — must be sourced last
+[[ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
+    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

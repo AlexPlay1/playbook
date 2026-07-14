@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+# Docker CE repository
+
+Types: deb
+URIs: https://download.docker.com/linux/debian
+Suites: {{ ansible_distribution_release }}
+Components: stable
+Architectures: amd64
+Signed-By: /usr/share/keyrings/docker-archive-keyring.asc
