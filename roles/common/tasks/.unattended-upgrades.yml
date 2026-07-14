@@ -18,7 +18,7 @@
 
 - name: Create override directory for apt-daily
   ansible.builtin.file:
-    path: /etc/systemd/system/apt-daily-upgrade.service.d
+    path: /etc/systemd/system/apt-daily-upgrade.timer.d
     state: directory
     owner: root
     group: root
