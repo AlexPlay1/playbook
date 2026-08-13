@@ -10,7 +10,7 @@
   tags: cloudflare-warp
   ansible.builtin.template:
     src: templates/apt/cloudflare.sources
-    dest: /etc/apt/cloudflare.sources
+    dest: /etc/apt/sources.list.d/cloudflare.sources
     owner: root
     group: root
     mode: "0644"
