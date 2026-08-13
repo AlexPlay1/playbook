@@ -1,7 +1,7 @@
 - name: Remove legacy Docker repository
-  ansible.builtin.copy:
-    content: ""
+  ansible.builtin.file:
     dest: /etc/apt/sources.list.d/docker.list
+    state: absent
 
 - name: Download Docker GPG key
   ansible.builtin.get_url:
