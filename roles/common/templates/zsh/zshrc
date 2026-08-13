@@ -32,6 +32,9 @@ bindkey '^[[3~' delete-char
 bindkey '^[[1;5C' forward-word    # Ctrl+Right
 bindkey '^[[1;5D' backward-word   # Ctrl+Left
 
+bindkey '^[[3;5~' kill-word       # Ctrl + Delete
+bindkey '^H' backward-kill-word   # Ctrl + Backspace
+
 # ── Prompt (minimal, two-line, git-aware) ──────────────────────────────────────
 autoload -Uz vcs_info
 zstyle ':vcs_info:git:*' formats ' %F{cyan}(%b)%f'
