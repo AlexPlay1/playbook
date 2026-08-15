@@ -17,6 +17,7 @@
 - name: Upgrade packages and install common utilities
   ansible.builtin.dnf:
     name:
+      - man
       - curl
       - wget
       - git

@@ -27,6 +27,7 @@
   ansible.builtin.apt:
     update_cache: true
     name:
+      - man
       - curl
       - wget
       - git
