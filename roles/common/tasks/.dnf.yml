@@ -1,0 +1,36 @@
+---
+- name: Ensure the crb repository is enabled
+  community.general.dnf_config_manager:
+    name: crb
+    state: enabled
+
+- name: Install epel-release
+  ansible.builtin.dnf:
+    name: epel-release
+    state: present
+
+- name: Remove cockpit
+  ansible.builtin.dnf:
+    name: cockpit
+    state: absent
+
+- name: Upgrade packages and install common utilities
+  ansible.builtin.dnf:
+    name:
+      - curl
+      - wget
+      - git
+      - htop
+      - ncdu
+      - tmux
+      - rsync
+      - iperf3
+      - gnupg2
+      - unzip
+      - xz
+      - zstd
+      - logrotate
+      - redhat-lsb-core
+      - dnf-plugins-core
+    state: present
+    update_cache: true

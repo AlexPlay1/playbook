@@ -1,6 +1,6 @@
 # Network setup
 - name: Install required package
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name:
       - systemd-resolved
     state: present

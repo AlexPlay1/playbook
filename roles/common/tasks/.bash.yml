@@ -1,9 +1,10 @@
 - name: Install bash-completion
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: bash-completion
     state: present
 
-- name: Enable bash-completion system-wide
+- name: Enable bash-completion system-wide (Debian)
+  when: ansible_facts['os_family'] == 'Debian'
   ansible.builtin.blockinfile:
     path: /etc/bash.bashrc
     marker: "# {mark} ANSIBLE MANAGED - bash-completion"

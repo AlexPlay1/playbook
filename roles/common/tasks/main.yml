@@ -7,20 +7,35 @@
 - name: Setup sysctl
   ansible.builtin.import_tasks: .sysctl.yml
 
-- name: Setup apt
+- name: Setup apt (Debian)
+  when: ansible_facts['os_family'] == 'Debian'
   ansible.builtin.import_tasks: .apt.yml
 
-- name: Setup unattended-upgrades
+- name: Setup dnf (RHEL)
+  when: ansible_facts['os_family'] == 'RedHat'
+  ansible.builtin.import_tasks: .dnf.yml
+
+- name: Setup unattended-upgrades (Debian)
+  when: ansible_facts['os_family'] == 'Debian'
   ansible.builtin.import_tasks: .unattended-upgrades.yml
 
-- name: Setup network
-  ansible.builtin.import_tasks: .network.yml
+- name: Setup dnf-automatic (RHEL)
+  when: ansible_facts['os_family'] == 'RedHat'
+  ansible.builtin.import_tasks: .dnf-automatic.yml
+
+# - name: Setup network
+#   ansible.builtin.import_tasks: .network.yml
 
 - name: Setup NTP time sync
   ansible.builtin.import_tasks: .ntp.yml
 
-- name: Setup firewall
-  ansible.builtin.import_tasks: .firewall.yml
+- name: Setup firewall (Debian)
+  when: ansible_facts['os_family'] == 'Debian'
+  ansible.builtin.import_tasks: .firewall.debian.yml
+
+- name: Setup firewall (RHEL)
+  when: ansible_facts['os_family'] == 'RedHat'
+  ansible.builtin.import_tasks: .firewall.rhel.yml
 
 # - name: Setup MTA
 #   ansible.builtin.import_tasks: .mail.yml

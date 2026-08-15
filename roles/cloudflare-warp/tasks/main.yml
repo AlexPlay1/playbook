@@ -1,13 +1,13 @@
-- name: Download Cloudflare GPG key
-  tags: cloudflare-warp
+- name: Download Cloudflare GPG key (Debian)
+  when: ansible_facts['os_family'] == 'Debian'
   ansible.builtin.get_url:
     url: https://pkg.cloudflareclient.com/pubkey.gpg
     dest: /usr/share/keyrings/cloudflare-warp-archive-keyring.asc
     mode: "0644"
     force: false
 
-- name: Add Cloudflare repository
-  tags: cloudflare-warp
+- name: Add Cloudflare repository (Debian)
+  when: ansible_facts['os_family'] == 'Debian'
   ansible.builtin.template:
     src: templates/apt/cloudflare.sources
     dest: /etc/apt/sources.list.d/cloudflare.sources
@@ -16,14 +16,21 @@
     mode: "0644"
   notify: Update apt cache
 
+- name: Add Cloudflare repository (RHEL)
+  when: ansible_facts['os_family'] == 'RedHat'
+  ansible.builtin.get_url:
+    url: https://pkg.cloudflareclient.com/cloudflare-warp-ascii.repo
+    dest: /etc/yum.repos.d/cloudflare-warp.repo
+    owner: root
+    group: root
+    mode: "0644"
+
 - name: Install Cloudflare Warp
-  tags: cloudflare-warp
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: cloudflare-warp
     state: present
 
 - name: Enable and start Warp service
-  tags: cloudflare-warp
   ansible.builtin.service:
     name: warp-svc
     enabled: true

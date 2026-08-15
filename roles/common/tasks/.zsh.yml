@@ -1,7 +1,7 @@
 # zsh
 - name: Install zsh and plugins from apt
   tags: zsh
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name:
       - zsh
       - zsh-syntax-highlighting
